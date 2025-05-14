@@ -1,4 +1,4 @@
-(*Seuil d'écoulement du sable*)
+(*Seuil d'Ã©coulement du sable*)
 let seuil = 5;;
 
 (*Initialisation du plateau recevant les grains de sables*)
@@ -15,7 +15,7 @@ let affichage_grille grille =
 ;;
 
 
-(*Implémentation du vent sous un module qui priorise les voisins*)
+(*ImplÃ©mentation du vent sous un module qui priorise les voisins*)
 module Vent = struct
   type direction = Nord | Sud | Est | Ouest
 
@@ -59,7 +59,7 @@ let appliquer_regle_vent grille vent =
   else None
 ;;
 
-(* Implémentation de la saltation sur chacune des cellules de la dune *)
+(* ImplÃ©mentation de la saltation sur chacune des cellules de la dune *)
 
 let appliquer_saltation grille x y =
   let (_,vent_dir) = Vent.deplacement_vent Vent.Est in
@@ -71,11 +71,11 @@ let appliquer_saltation grille x y =
       if x' < Array.length grille then
        ( match grille.(x').(y) with
         | 0 ->
-            grille.(x').(y) <- 5;  (* dépose un grain dans la cellule cible *)
+            grille.(x').(y) <- 5;  (* dÃ©pose un grain dans la cellule cible *)
             let nouvelle_qte = qte - 5 in
             grille.(x).(y) <- nouvelle_qte
         | qte' ->
-            (* ajoute un grain à la cellule cible *)
+            (* ajoute un grain Ã  la cellule cible *)
             grille.(x').(y) <- qte' + 1;
             let nouvelle_qte = qte - 1 in
             grille.(x).(y) <- nouvelle_qte
@@ -83,7 +83,7 @@ let appliquer_saltation grille x y =
   | _ -> ()
 ;;
 
-(* Implémentation du charriage sur chacune des cellules recevant la saltation *)
+(* ImplÃ©mentation du charriage sur chacune des cellules recevant la saltation *)
 
 let appliquer_charriage grille x y force_charriage =
   let proba_charriage = 0.5 in
@@ -117,7 +117,7 @@ let sommet_n_est_plus_maximum grille positions =
     ) positions
 ;;
 
-(* Simulation avec vent jusqu'à stabilisation *)
+(* Simulation avec vent jusqu'Ã  stabilisation *)
 let rec simuler_avec_vent grille vent =
   match appliquer_regle_vent grille vent with
   | Some nouvelle_grille -> simuler_avec_vent nouvelle_grille vent
@@ -150,7 +150,7 @@ let save_to_file filename matrix =
 let () =
   let grille = init_grille 50 50 in
 
-  (* Dépôt de sable au centre *)
+  (* DÃ©pÃ´t de sable *)
   for i = 2 to 44 do
     grille.(i).(22) <- 9000;
   done;
@@ -168,12 +168,12 @@ let () =
   done;
 
   for x = 0 to (Array.length resultat - 1) do
-    for y = 0 to (Array.length resultat.(0) - 2) do  (* on s'arrête avant que l'on ne puisse plus transférer plus bas *)
+    for y = 0 to (Array.length resultat.(0) - 2) do  (* on s'arrÃªte avant que l'on ne puisse plus transfÃ©rer plus bas *)
       appliquer_charriage resultat x y 3
     done;
   done;
 
-  Printf.printf "Grille après simulation :\n";
+  Printf.printf "Grille aprÃ¨s simulation :\n";
   affichage_grille resultat;
   sauvegarder_grille resultat "pilat_ocaml.txt";
   save_to_file "pilat_ocaml.txt" resultat
