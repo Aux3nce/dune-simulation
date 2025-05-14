@@ -1,4 +1,4 @@
-(*Seuil d'écoulement du sable*)
+(*Seuil d'Ã©coulement du sable*)
 let seuil = 5;;
 
 (*Initialisation du plateau recevant les grains de sables*)
@@ -15,7 +15,7 @@ let affichage_grille grille =
 ;;
 
 
-(*Implémentation du vent sous un module qui priorise les voisins*)
+(*ImplÃ©mentation du vent sous un module qui priorise les voisins*)
 module Vent = struct
   type direction = Nord | Sud | Est | Ouest
 
@@ -68,7 +68,7 @@ let sommet_n_est_plus_maximum grille positions =
     ) positions
 ;;
 
-(* Simulation avec vent jusqu'à stabilisation *)
+(* Simulation avec vent jusqu'Ã  stabilisation *)
 let rec simuler_avec_vent grille vent =
   match appliquer_regle_vent grille vent with
   | Some nouvelle_grille -> simuler_avec_vent nouvelle_grille vent
@@ -101,7 +101,7 @@ let save_to_file filename matrix =
 let () =
   let grille = init_grille 50 50 in
 
-  (* Dépôt de sable au centre *)
+  (* DÃ©pÃ´t de sable *)
   for i = 2 to 44 do
     grille.(i).(22) <- 9000;
   done;
@@ -112,7 +112,7 @@ let () =
   let vent = Vent.Est in
   let resultat = simuler_avec_vent grille vent in
 
-  Printf.printf "Grille après simulation :\n";
+  Printf.printf "Grille aprÃ¨s simulation :\n";
   affichage_grille resultat;
   sauvegarder_grille resultat "pilat_ocaml.txt";
   save_to_file "pilat_ocaml.txt" resultat
