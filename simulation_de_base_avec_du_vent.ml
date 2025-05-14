@@ -101,7 +101,7 @@ let save_to_file filename matrix =
 let () =
   let grille = init_grille 50 50 in
 
-  (* Dépôt de sable au centre *)
+  (* Dépôt de sable *)
   for i = 2 to 44 do
     grille.(i).(22) <- 9000;
   done;
