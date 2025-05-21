@@ -208,8 +208,6 @@ let () =
 
   Printf.printf "Grille après simulation :\n";
   affichage_grille resultat;
-  let total = compteur resultat in
-  Printf.printf "Total de sable dans la grille : %d\n" total;
   sauvegarder_grille resultat "pilat_ocaml.txt";
   save_to_file "pilat_ocaml.txt" resultat
 ;;
