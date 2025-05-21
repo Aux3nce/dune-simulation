@@ -1,4 +1,4 @@
-(*Seuil d'écoulement du sable*)
+(*Seuil d'Ã©coulement du sable*)
 let seuil = 5;;
 
 (*Initialisation du plateau recevant les grains de sables*)
@@ -15,7 +15,7 @@ let affichage_grille grille =
 ;;
 
 
-(*Implémentation du vent sous un module qui priorise les voisins*)
+(*ImplÃ©mentation du vent sous un module qui priorise les voisins*)
 module Vent = struct
   type direction = Nord | Sud | Est | Ouest
 
@@ -59,7 +59,7 @@ let appliquer_regle_vent grille vent =
   else None
 ;;
 
-(* Implémentation de la saltation sur chacune des cellules de la dune *)
+(* ImplÃ©mentation de la saltation sur chacune des cellules de la dune *)
 
 let appliquer_saltation grille x y =
   let (_,vent_dir) = Vent.deplacement_vent Vent.Est in
@@ -71,11 +71,11 @@ let appliquer_saltation grille x y =
       if x' < Array.length grille then
        ( match grille.(x').(y) with
         | 0 ->
-            grille.(x').(y) <- 3;  (* dépose dans la cellule cible entre 1 et 5 grains *)
+            grille.(x').(y) <- 3;  (* dÃ©pose dans la cellule cible entre 1 et 5 grains *)
             let nouvelle_qte = qte - 3 in
             grille.(x).(y) <- nouvelle_qte
         | qte' ->
-            (* ajoute un grain à la cellule cible *)
+            (* ajoute un grain Ã  la cellule cible *)
             grille.(x').(y) <- qte' + 2;
             let nouvelle_qte = qte - 2 in
             grille.(x).(y) <- nouvelle_qte
@@ -83,7 +83,7 @@ let appliquer_saltation grille x y =
   | _ -> ()
 ;;
 
-(* Implémentation du charriage sur chacune des cellules recevant la saltation *)
+(* ImplÃ©mentation du charriage sur chacune des cellules recevant la saltation *)
 
 let appliquer_charriage grille x y force_charriage =
   let proba_charriage = 0.25 in
@@ -117,7 +117,7 @@ let sommet_n_est_plus_maximum grille positions =
     ) positions
 ;;
 
-(* Simulation avec vent jusqu'à stabilisation *)
+(* Simulation avec vent jusqu'Ã  stabilisation *)
 let rec simuler_avec_vent grille vent =
   match appliquer_regle_vent grille vent with
   | Some nouvelle_grille -> simuler_avec_vent nouvelle_grille vent
@@ -127,9 +127,9 @@ let rec simuler_avec_vent grille vent =
 let rec simuler_dynamique_avec_vent grille vent =
   match appliquer_regle_vent grille vent with
   | Some nouvelle_grille ->
-      (* Effacer l'écran *)
-      print_string "\027[2J";  (* code ANSI pour effacer l'écran *)
-      print_string "\027[H";   (* se replacer en haut à gauche *)
+      (* Effacer l'Ã©cran *)
+      print_string "\027[2J";  (* code ANSI pour effacer l'Ã©cran *)
+      print_string "\027[H";   (* se replacer en haut Ã  gauche *)
       affichage_grille nouvelle_grille;
       simuler_dynamique_avec_vent nouvelle_grille vent
   | None -> grille
@@ -158,7 +158,7 @@ let save_to_file filename matrix =
 ;;
 
 let sauvegarder_etape_cumulative oc etape grille =
-  Printf.fprintf oc "Étape %d:\n" etape;
+  Printf.fprintf oc "Ã‰tape %d:\n" etape;
   Array.iter (fun ligne ->
       Array.iter (fun valeur -> Printf.fprintf oc "%d " valeur) ligne;
       Printf.fprintf oc "\n"
@@ -166,7 +166,7 @@ let sauvegarder_etape_cumulative oc etape grille =
   Printf.fprintf oc "\n%!";
 ;;
 
-(* Vérification du programme *)
+(* VÃ©rification du programme *)
 
 let compteur grille = 
 	let cpt = ref 0 in
@@ -183,7 +183,7 @@ let compteur grille =
 let () =
   let grille = init_grille 30 30 in
 
-  (* Dépôt de sable *)
+  (* DÃ©pÃ´t de sable *)
   for i = 5 to 25 do
     grille.(i).(22) <- 1000;
   done;
@@ -201,33 +201,12 @@ let () =
   done;
 
   for x = 0 to (Array.length resultat - 1) do
-    for y = 0 to (Array.length resultat.(0) - 2) do  (* on s'arrête avant que l'on ne puisse plus transférer plus bas *)
+    for y = 0 to (Array.length resultat.(0) - 2) do  (* on s'arrÃªte avant que l'on ne puisse plus transfÃ©rer plus bas *)
       appliquer_charriage resultat x y 2
     done;
   done;
 
-  (* Ouverture du fichier de sortie *)
-  let out = open_out "historique_simulation.txt" in
-
-  (* Initialisation de la simulation *)
-  let etape = ref 0 in
-  let g = ref (Array.map Array.copy grille) in
-
-  (* Simulation dynamique avec export à chaque étape *)
-  while true do
-    sauvegarder_etape_cumulative out !etape !g;
-
-    match appliquer_regle_vent !g vent with
-    | Some nouvelle ->
-        incr etape;
-        g := nouvelle;
-    | None ->
-        Printf.fprintf out "Simulation terminée à l'étape %d\n" !etape;
-        close_out out;
-        exit 0
-  done;
-
-  Printf.printf "Grille après simulation :\n";
+  Printf.printf "Grille aprÃ¨s simulation :\n";
   affichage_grille resultat;
   let total = compteur resultat in
   Printf.printf "Total de sable dans la grille : %d\n" total;
