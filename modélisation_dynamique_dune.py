@@ -12,7 +12,7 @@ from matplotlib.animation import FuncAnimation
 
 #############################################################################
 
-# 🔁 Fonction pour parser le fichier OCaml
+# Fonction pour obtenir le fichier OCaml
 def charger_matrices_depuis_fichier(nom_fichier):
     with open(nom_fichier, 'r') as f:
         lignes = f.readlines()
@@ -36,11 +36,11 @@ def charger_matrices_depuis_fichier(nom_fichier):
     return matrices
 
 
-# 🔁 Charger les données
+# Charger les données souhaitées
 chemin = r"C:\Users\auxen\OneDrive\Documents\MP_etoile\TIPE\jpp\historique_simulation.txt"
 matrices = charger_matrices_depuis_fichier(chemin)
 
-# ✅ Initialisation de la figure
+#  Initialisation de la figure
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
@@ -53,7 +53,7 @@ bottom = np.zeros_like(x)
 width = depth = 0.8
 bars = None
 
-# 🔁 Fonction d’animation
+# Fonction d’animation
 def update(frame):
     global bars
     ax.clear()
@@ -70,7 +70,7 @@ def update(frame):
     ax.set_zlabel("Hauteur")
     ax.view_init(elev=45, azim=135)
 
-# 🎞 Lancer l’animation
+# Lancer l’animation
 ani = FuncAnimation(fig, update, frames=len(matrices), interval=200)
 
 plt.show()
